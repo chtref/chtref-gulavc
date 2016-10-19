@@ -54,11 +54,42 @@ imshow(img_cont);
 %filtrer l'image.
 
 %%
-%Exercice 1
+%Exercice 2
 %%
-%Exercice 1.1
+%Exercice 2.1
+
+img = imread('monnaie.png');
+figure(5)
+imshow(img);
+
+%%
+%Exercice 2.2
+
+img_bw = Binariser(img,250);
+
+img_bw_inv = 255 - img_bw;
+
+figure(6)
+imshow(img_bw_inv);
+
+%%
+%Exercice 2.3
+
+se = strel('disk',1);
+img_close = imclose(img_bw_inv,se);
+
+figure(7)
+imshow(img_close);
+
+%%
+%Exercice 2.4
+% On présume que les pièces sont les suivantes, de gauche à droite et de
+% haut en bas:
+% 5¢ 5¢ 10¢ 10¢
+% 25¢   1$  10¢
+% 5¢ 1$     2$
 
 
-
+[value,count = Compter_Monnaie(img_close);
 
 

@@ -1,0 +1,26 @@
+function [ money_value ] = Compter_Monnaie( img_in )
+%Compter_Monnaie Compter_Monnaie
+
+line = strel('disk',5);
+im2 = imerode(img_in,line,'same');
+initial_count = max(max(bwlabel(im2))); %nb de pieces dans l'image
+
+line = strel('disk',41);
+im2 = imerode(im2,line,'same');
+remaining_count = max(max(bwlabel(im2))); %nb de pieces restantes dans l'image
+count_10c = initial_count - remaining_count
+
+current_count = remaining_count;
+
+line = strel('disk',12);
+im2 = imerode(im2,line,'same');
+remaining_count = max(max(bwlabel(im2))); %nb de pieces restantes dans l'image
+count_5c = current_count - remaining_count
+current_count = remaining_count;
+
+figure(10)
+imshow(im2);
+money_value = 0;
+
+end
+
