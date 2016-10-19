@@ -17,8 +17,8 @@ inline cv::Mat_<Tout> dct_inv(const cv::Mat_<Tin>& oBlock) {
 
 			float F_xy = 0.0;
 
-			for (int u = 0; u < (n - 1); ++u) {
-				for (int v = 0; v < (n - 1); ++v) {
+			for (int u = 0; u <= (n - 1); ++u) {
+				for (int v = 0; v <= (n - 1); ++v) {
 
 					float c_u, c_v;
 					if (u == 0) {

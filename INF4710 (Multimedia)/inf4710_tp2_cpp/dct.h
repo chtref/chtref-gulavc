@@ -17,8 +17,8 @@ inline cv::Mat_<Tout> dct(const cv::Mat_<Tin>& oBlock) {
 
 			float result = 0.0;
 
-			for (int x = 0; x < (n - 1); ++x) {
-				for (int y = 0; y < (n - 1); ++y) {
+			for (int x = 0; x <= (n - 1); ++x) {
+				for (int y = 0; y <= (n - 1); ++y) {
 					
 					// F_xy * cos#1 * cos#2
 					result += float(oBlock.at<uchar>(x, y)) * cos(((CV_PI * (2.0*(x) + 1.0)*(u)) / (2.0*n))) * cos(((CV_PI * (2.0*(y) + 1.0)*(v)) / (2.0*n)));
