@@ -92,7 +92,7 @@ imshow(img_close);
 
 [value,count] = Compter_Monnaie(img_close);
 
-%DISP VALUE + COUNT TO BE COOL
+%DISP VALUE + COUNT TO BE COOL k?
 
 %%
 %Partie 2
