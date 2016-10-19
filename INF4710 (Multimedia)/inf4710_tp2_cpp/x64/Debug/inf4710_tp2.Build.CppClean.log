@@ -1,25 +1,18 @@
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.ilk
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.exe
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.pdb
-x:\bureau\inf4710_tp2_cpp\x64\debug\vc140.pdb
-x:\bureau\inf4710_tp2_cpp\x64\debug\vc140.idb
-x:\bureau\inf4710_tp2_cpp\x64\debug\main.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\conv_rgb2ycbcr.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\conv_ycbcr2rgb.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\dct.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\dct_inv.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\decoup.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\decoup_inv.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\huff.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\huff_common.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\huff_inv.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\quantif.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\quantif_inv.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\zigzag.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\zigzag_inv.obj
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\link.command.1.tlog
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\link.write.1.tlog
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\link.read.1.tlog
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\cl.write.1.tlog
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\cl.command.1.tlog
-x:\bureau\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\cl.read.1.tlog
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\vc140.pdb
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\vc140.idb
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\conv_rgb2ycbcr.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\conv_ycbcr2rgb.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\dct.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\dct_inv.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\decoup.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\decoup_inv.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\huff.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\huff_common.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\huff_inv.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\quantif.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\quantif_inv.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\zigzag.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\zigzag_inv.obj
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\cl.command.1.tlog
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\cl.read.1.tlog
+c:\temp\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\x64\debug\inf4710_tp2.tlog\cl.write.1.tlog
