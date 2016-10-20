@@ -1,6 +1,0 @@
-function [ output_args ] = Rehaussement_Contour( img_in, mask_g )
-%Rehaussement_Contour Rehaussement_Contour
-
-
-end
-
