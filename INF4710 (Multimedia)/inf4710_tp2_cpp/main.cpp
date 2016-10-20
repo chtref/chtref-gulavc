@@ -71,6 +71,7 @@ int main(int /*argc*/, char** /*argv*/) {
 
             // Calcul du taux de compression
 			// TODO: Taux de Compr. = 1 - (Longueur du signal compressé / Longueur du signal original)
+			std::cout << "img: " << sTestImagePath << " -- taux: " << 1 - (double(sizeof(oCode)) / double(sizeof(oInput))) << std::endl;
 
 
 ///////////////////
