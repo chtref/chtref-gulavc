@@ -71,7 +71,8 @@ int main(int /*argc*/, char** /*argv*/) {
 
             // Calcul du taux de compression
 			// TODO: Taux de Compr. = 1 - (Longueur du signal compressé / Longueur du signal original)
-			std::cout << "img: " << sTestImagePath << " -- taux: " << 1 - (double(sizeof(oCode)) / double(sizeof(oInput))) << std::endl;
+			//oCode.string.size() = taille du vecteur de bool (en bits) // oInput.cols * oInput.rows * oInput.channels() taille de la matrice incluant le channelname en uchar (8 bits)
+			std::cout << "img: " << sTestImagePath << " -- taux: " << 1 - (double(oCode.string.size()) / double((oInput.cols * oInput.rows * oInput.channels()) * 8)) << std::endl;
 
 
 ///////////////////

@@ -1,0 +1,44 @@
+﻿  main.cpp
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\conv_rgb2ycbcr.h(23): warning C4244: 'initializing': conversion from 'double' to 'uchar', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\conv_rgb2ycbcr.h(34): warning C4244: 'initializing': conversion from 'double' to 'uchar', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\conv_rgb2ycbcr.h(35): warning C4244: '=': conversion from 'double' to 'uchar', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\conv_rgb2ycbcr.h(36): warning C4244: '=': conversion from 'double' to 'uchar', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\conv_rgb2ycbcr.h(53): warning C4244: 'initializing': conversion from 'double' to 'uchar', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\conv_rgb2ycbcr.h(55): warning C4244: '=': conversion from 'double' to 'uchar', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\conv_rgb2ycbcr.h(56): warning C4244: '=': conversion from 'double' to 'uchar', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct.h(24): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  main.cpp(58): note: see reference to function template instantiation 'cv::Mat_<float> dct<uchar,float>(const cv::Mat_<uchar> &)' being compiled
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct.h(30): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct.h(33): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct.h(37): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct.h(40): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct_inv.h(25): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  main.cpp(97): note: see reference to function template instantiation 'cv::Mat_<uchar> dct_inv<float,uchar>(const cv::Mat_<float> &)' being compiled
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct_inv.h(28): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct_inv.h(32): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct_inv.h(35): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\users\guillaume\documents\polymtl\chtref\chtref-gulavc\inf4710 (multimedia)\inf4710_tp2_cpp\dct_inv.h(39): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+  conv_rgb2ycbcr.h
+conv_rgb2ycbcr.h(23): warning C4244: 'initializing': conversion from 'double' to 'uchar', possible loss of data
+conv_rgb2ycbcr.h(34): warning C4244: 'initializing': conversion from 'double' to 'uchar', possible loss of data
+conv_rgb2ycbcr.h(35): warning C4244: '=': conversion from 'double' to 'uchar', possible loss of data
+conv_rgb2ycbcr.h(36): warning C4244: '=': conversion from 'double' to 'uchar', possible loss of data
+conv_rgb2ycbcr.h(53): warning C4244: 'initializing': conversion from 'double' to 'uchar', possible loss of data
+conv_rgb2ycbcr.h(55): warning C4244: '=': conversion from 'double' to 'uchar', possible loss of data
+conv_rgb2ycbcr.h(56): warning C4244: '=': conversion from 'double' to 'uchar', possible loss of data
+  conv_ycbcr2rgb.h
+  dct.h
+  dct_inv.h
+  decoup.h
+  decoup_inv.h
+  huff.h
+  huff_common.h
+  huff_inv.h
+  quantif.h
+  quantif_inv.h
+  zigzag.h
+  zigzag_inv.h
+  Generating code
+  All 1424 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  inf4710_tp2.vcxproj -> C:\Users\Guillaume\Documents\Polymtl\chtref\chtref-gulavc\INF4710 (Multimedia)\inf4710_tp2_cpp\x64\Release\inf4710_tp2.exe
