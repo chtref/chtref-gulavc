@@ -17,8 +17,8 @@
 #include "zigzag.h"
 #include "zigzag_inv.h"
 
-#define USE_SUBSAMPLING 0
-#define USE_QUANT_QUALITY 100
+#define USE_SUBSAMPLING 1
+#define USE_QUANT_QUALITY 10
 
 int main(int /*argc*/, char** /*argv*/) {
     try {
@@ -39,6 +39,7 @@ int main(int /*argc*/, char** /*argv*/) {
 /////////////////
 // COMPRESSION //
 /////////////////
+
 
 			//Conv R-G-B to Y-Cb-Cr
             cv::Mat_<uchar> Y,Cb,Cr;
