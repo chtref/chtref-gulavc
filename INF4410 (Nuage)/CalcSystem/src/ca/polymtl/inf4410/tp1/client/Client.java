@@ -6,19 +6,21 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.math.*;
-import java.util.Arrays;
+import java.util.*;
+import java.io.File;
+import java.nio.file.*;
 
 import ca.polymtl.inf4410.tp1.shared.ServerInterface;
 import ca.polymtl.inf4410.tp1.shared.Pair;
 
 public class Client {
 	
-	private String[] _serverList;
-	private int[] _serverOccupancy;
-	private int[] _serverLimit;
-	private int[] _serverReputation;
-	private boolean _unsafeMode;
-	private ServerInterface[] distantServerStubs;
+	private static String[] _serverList;
+	private static int[] _serverOccupancy;
+	private static int[] _serverLimit;
+	private static int[] _serverReputation;
+	private static boolean _unsafeMode = false;
+	private static ServerInterface[] distantServerStubs;
 	
 	public static void main(String[] args) {
 		String filePath = null;
@@ -49,35 +51,76 @@ public class Client {
 		try{
 			
 			//read server list file and create list of servers
-			File f = new File("serverList.xqt");
-			List<String> lines = Files.readLines(f);
-
+			List<String> lines = Files.readAllLines(Paths.get("serverList.xqt"));
+			
+			_serverOccupancy = new int[lines.size()];
+			_serverLimit = new int[lines.size()];
+			_serverReputation = new int[lines.size()];
+			distantServerStubs = new ServerInterface[lines.size()];
+			
 			for(int i = 0; i<lines.size(); i++){
-				distantServerStubs[i] = loadServerStub(Integer.parseInt(lines.get(i)));
+				distantServerStubs[i] = loadServerStub(lines.get(i));
 				_serverOccupancy[i] = 0;
 				_serverReputation[i] = 0;
+				_serverLimit[i] = 3;
 			}
 		} catch (Exception e){
-			System.out.println("Erreur: " + e.getMessage());
+			System.out.println("Erreur 1: " + e.getMessage());
 		}
 	}
 
 	private void run(String path) {
 		
-		//read calc file
-		//separate in appropriate tasks
-		//create threads
-			//send to available server
-			//wait for answer
-			//if timeout send to another server
-		//validate answer if unsafe mode
-		//add to result
-		//display result
+		LinkedList<Pair<String,Integer>> uncompletedTasks = new LinkedList<Pair<String,Integer>>();
+		LinkedList<Pair<String,Integer>> sentTasks = new LinkedList<Pair<String,Integer>>();
+		//read calc file		
+		try{
+			
+			//read list of calculators
+			List<String> lines = Files.readAllLines(Paths.get(path));
+			
+			for(String s : lines){
+				String[] parts = s.split(" ");
+				Pair<String,Integer> pair = new Pair<String,Integer>(parts[0], Integer.parseInt(parts[1]));
+				uncompletedTasks.add(pair);
+			}
+			
+		} catch (Exception e){
+			System.out.println("Erreur 2: " + e.getMessage());
+		}
+		
+		
+		
+		while(uncompletedTasks.size() > 0 || sentTasks.size() > 0){
+			
+			if(uncompletedTasks.size() > 0){
+				//Choose available server
+				int server = chooseServer();
+				//Create appropriately sized task
+				ArrayList<Pair<String,Integer>>[] task = new ArrayList[_serverLimit[server]];
+				for(int i = 0; i<_serverLimit[server] && uncompletedTasks.size() > 0; ++i){
+					task.add(uncompletedTasks.peekFirst());
+					sentTasks.add(uncompletedTasks.pollFirst());
+				}
+				
+				//create thread for task
+				(new CalcThread()).start();
+					//put task in sent tasks
+					//send task to server
+					//wait for answer
+					//if timeout put back in uncompleted
+						//remove server from list
+					//if not timeout remove from senttasks
+			}
+			//validate if unsafe
+			//add to result
+			
+		}
 	}
 
 	private ServerInterface loadServerStub(String hostname) {
 		ServerInterface stub = null;
-
+		
 		try {
 			Registry registry = LocateRegistry.getRegistry(hostname);
 			stub = (ServerInterface) registry.lookup("server");
@@ -85,12 +128,26 @@ public class Client {
 			System.out.println("Erreur: Le nom '" + e.getMessage()
 					+ "' n'est pas défini dans le registre.");
 		} catch (AccessException e) {
-			System.out.println("Erreur: " + e.getMessage());
+			System.out.println("Erreur 3: " + e.getMessage());
 		} catch (RemoteException e) {
-			System.out.println("Erreur: " + e.getMessage());
+			System.out.println("Erreur 4: " + e.getMessage());
 		}
 
 		return stub;
 	}
+	
+	//Chooses which server to send the next tast to
+	private int chooseServer(){
+		
+		return (int)(Math.random()*_serverOccupancy.length);
+	}
+	
+	private class CalcThread extends Thread {
+		
+		public void run() {
+			System.out.println("Hello from a thread!");
+		}
+	
+	} 
 
 }
