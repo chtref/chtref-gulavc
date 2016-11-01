@@ -9,6 +9,7 @@ import java.math.*;
 import java.util.*;
 import java.io.File;
 import java.nio.file.*;
+import java.util.concurrent.*;
 
 import ca.polymtl.inf4410.tp1.shared.ServerInterface;
 import ca.polymtl.inf4410.tp1.shared.Pair;
@@ -90,7 +91,13 @@ public class Client {
 		}
 		
 		
+		final ExecutorService service;
+        final Future<String> threadTask;
+
+        service = Executors.newFixedThreadPool(2 * distantServerStubs.length);        
+        
 		
+		int global_answer = 0;
 		while(uncompletedTasks.size() > 0 || sentTasks.size() > 0){
 			
 			if(uncompletedTasks.size() > 0){
@@ -104,7 +111,19 @@ public class Client {
 				}
 				
 				//create thread for task
-				(new CalcThread()).start();
+				threadTask = service.submit(new CalcThread(task, distantServerStubs[server]));
+				try{
+					final int partial_answer;
+					
+					partial_answer = threadTask.get();
+					
+					global_answer += partial_answer;
+				} catch(final InterruptedException ex) {
+					ex.printStackTrace();
+				} catch(final ExecutionException ex) {
+					ex.printStackTrace();
+				}
+
 					//put task in sent tasks
 					//send task to server
 					//wait for answer
@@ -114,8 +133,9 @@ public class Client {
 			}
 			//validate if unsafe
 			//add to result
-			
+			System.out.println(global_answer);
 		}
+		service.shutdownNow();
 	}
 
 	private ServerInterface loadServerStub(String hostname) {
@@ -142,10 +162,23 @@ public class Client {
 		return (int)(Math.random()*_serverOccupancy.length);
 	}
 	
-	private class CalcThread extends Thread {
+	private class CalcThread implements Callable<Integer> {
 		
-		public void run() {
-			System.out.println("Hello from a thread!");
+		private ArrayList<Pair<String,Integer>>[] _task;
+		private ServerInterface _server;
+		
+		public CalcThread(ArrayList<Pair<String,Integer>>[] task, ServerInterface server){
+			_task = task;
+			_server = server;
+		}
+		
+		public int call() {
+			int result = 0;
+			for(int i = 0; i < _task.size(); ++i){
+				result += _server.execute(_task[i].toArray());
+			}
+			
+			return Integer(result);
 		}
 	
 	} 
