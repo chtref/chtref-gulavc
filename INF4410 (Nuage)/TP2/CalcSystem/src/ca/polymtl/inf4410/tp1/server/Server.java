@@ -86,15 +86,15 @@ public class Server implements ServerInterface {
 	//-1 = error / server full, need to reassign
 	//[0, infinity+ = "good" answer
 	@Override
-	public int execute(Pair<String,Integer>[] listOps) throws RemoteException {
+	public int execute(ArrayList<Pair<String, Integer>> listOps) throws RemoteException {
 		//verify if available
-		if(acceptTask(listOps.length)){
+		if(acceptTask(listOps.size())){
 			int result = 0;
-			for(int i = 0; i<listOps.length; ++i){
-				if(listOps[i].x.toLowerCase().equals("prime")){
-					result += Operations.prime(listOps[i].y.intValue());
-				} else if (listOps[i].x.toLowerCase().equals("pell")){
-					result += Operations.pell(listOps[i].y.intValue());
+			for(int i = 0; i<listOps.size(); ++i){
+				if(listOps.get(i).x.toLowerCase().equals("prime")){
+					result += Operations.prime(listOps.get(i).y.intValue());
+				} else if (listOps.get(i).x.toLowerCase().equals("pell")){
+					result += Operations.pell(listOps.get(i).y.intValue());
 				} else {
 					//panic
 					System.out.println("Unsupported operation in task. Aborting.");

@@ -73,7 +73,7 @@ public class Client {
 	private void run(String path) {
 		
 		LinkedList<Pair<String,Integer>> uncompletedTasks = new LinkedList<Pair<String,Integer>>();
-		LinkedList<Pair<String,Integer>> sentTasks = new LinkedList<Pair<String,Integer>>();
+		LinkedList<Pair<String, Integer>> sentTasks = new LinkedList<Pair<String,Integer>>();
 		//read calc file		
 		try{
 			
@@ -92,7 +92,7 @@ public class Client {
 		
 		
 		final ExecutorService service;
-        final Future<String> threadTask;
+        Future<Integer> threadTask;
 
         service = Executors.newFixedThreadPool(2 * distantServerStubs.length);        
         
@@ -104,19 +104,22 @@ public class Client {
 				//Choose available server
 				int server = chooseServer();
 				//Create appropriately sized task
-				ArrayList<Pair<String,Integer>>[] task = new ArrayList[_serverLimit[server]];
+				ArrayList<Pair<String,Integer>> task = new ArrayList<Pair<String,Integer>>(_serverLimit[server]);
 				for(int i = 0; i<_serverLimit[server] && uncompletedTasks.size() > 0; ++i){
 					task.add(uncompletedTasks.peekFirst());
 					sentTasks.add(uncompletedTasks.pollFirst());
 				}
 				
+				
 				//create thread for task
+				System.out.println("Prte");
 				threadTask = service.submit(new CalcThread(task, distantServerStubs[server]));
+				System.out.println("Pa: ");
 				try{
 					final int partial_answer;
-					
+					System.out.println("chretf");
 					partial_answer = threadTask.get();
-					
+					System.out.println("Pa: " + partial_answer);
 					global_answer += partial_answer;
 				} catch(final InterruptedException ex) {
 					ex.printStackTrace();
@@ -133,7 +136,7 @@ public class Client {
 			}
 			//validate if unsafe
 			//add to result
-			System.out.println(global_answer);
+			//System.out.println(global_answer);
 		}
 		service.shutdownNow();
 	}
@@ -164,21 +167,26 @@ public class Client {
 	
 	private class CalcThread implements Callable<Integer> {
 		
-		private ArrayList<Pair<String,Integer>>[] _task;
+		private ArrayList<Pair<String, Integer>> _task;
 		private ServerInterface _server;
 		
-		public CalcThread(ArrayList<Pair<String,Integer>>[] task, ServerInterface server){
+		public CalcThread(ArrayList<Pair<String, Integer>> task, ServerInterface server){
+			
 			_task = task;
 			_server = server;
 		}
 		
-		public int call() {
+		public Integer call() {
 			int result = 0;
 			for(int i = 0; i < _task.size(); ++i){
-				result += _server.execute(_task[i].toArray());
+				try {
+					result += _server.execute(_task);
+				} catch (RemoteException e) {
+					e.printStackTrace();
+				}
 			}
 			
-			return Integer(result);
+			return Integer.valueOf(result);
 		}
 	
 	} 
