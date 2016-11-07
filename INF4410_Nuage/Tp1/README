@@ -1,0 +1,6 @@
+Partie serveur:
+1. Lancer "rmiregistry &" dans bin
+2. Exécuter ./server
+
+Partie client:
+1. Écrire "./client" suivi de la commande désirée. Une liste de commandes disponibles peut être trouvée en écrivant "./client help"
