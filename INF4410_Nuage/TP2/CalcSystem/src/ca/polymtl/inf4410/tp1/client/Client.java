@@ -123,15 +123,12 @@ public class Client {
 					final int partial_answer;
 					partial_answer = threadTask.get();
 					
-					System.out.println(partial_answer);
-					
 					if(partial_answer == -1){
 						//server error
-						System.out.println("JOHN FUCKING CENA");
 						_serverLimit[server] -= 1;
 						for(Pair<String,Integer> p : task){
-							uncompletedTasks.add(p);
 							sentTasks.remove(p);							
+							uncompletedTasks.add(p);
 						}
 					} else {
 						//validate
@@ -192,17 +189,12 @@ public class Client {
 		
 		public Integer call() {
 			int result = 0;
-			for(int i = 0; i < _task.size(); ++i){
-				try {
-					int calcVal = _server.execute(_task);
-					if(calcVal == -1){
-						//panix
-						return -1;
-					}
-					result = (result + calcVal) % 4000;
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
+			
+			try {
+				result = _server.execute(_task);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				result = -1;
 			}
 			
 			return Integer.valueOf(result);
