@@ -1,0 +1,71 @@
+2 serveurs, (3 et 6), (0.0 et 0.0)
+
+Time: 684518088
+Answer: 80
+
+3 serveurs (3, 6 et 9), (0.0, 0.0 et 0.0)
+
+Time: 456766245
+Answer: 80
+
+4 serveurs (3, 6, 9 et 12), (0.0, 0.0, 0.0 et 0.0)
+
+Time: 399059506
+Answer: 80
+
+
+////////////////////////////////////////////////////
+
+
+<Graphique>
+
+(Client = répartiteur)
+(Serveur = serveur de calcul)
+
+Il est facile de remarquer que le temps avoir d'obtenir un résultat est constamment réduit en ajoutant des serveurs. En effet, avoir de plus en plus de serveurs permet de former plus de threads pour ainsi accomplir plus de tâches plus rapidement, puisque le Client réparti ses tâches aux autres serveurs. 
+
+
+////////////////////////////////////////////////////
+
+
+3 serveurs (5, 5 et 5), (0.0, 0.0 et 0.0) (ORIGINAL)
+
+Time: 476781790
+Answer: 80
+
+3 serveurs (5, 5 et 5), (0.0, 0.0 et 0.0) (T)
+
+Time: 826326110
+Answer: 80
+
+
+////////////////////////////////////////////////////
+
+3 serveurs (5, 5 et 5), (0.5, 0.0 et 0.0) (T)
+
+Time: 1124724797
+Answer: 80
+
+
+////////////////////////////////////////////////////
+
+3 serveurs (5, 5 et 5), (0.5, 0.5 et 0.0)
+
+Time: 1426998243
+Answer: 80
+
+
+////////////////////////////////////////////////////
+
+
+Nous pouvons observer que plus il y a de serveurs malicieux, plus le temps avant d'obtenir une réponse augmente. Ce phénomène s'explique par l'algorithme qui exige une validation avec un autre serveur avant de confirmer qu'une réponse est adéquate. Si deux serveurs ont des réponses différentes (ou que l'un des deux serveurs échoue quelque part), les tâches doivent être re-exécutées. Par conséquent, avoir plus de serveurs malicieux augmente notamment la variance dans nos résultats et exige plus de validation.
+
+On peut aussi observer que le temps d'attente sans utiliser la validation est notamment plus petite, puisque chaque tâche ne necessite pas de confirmation par un autre serveur.
+
+
+////////////////////////////////////////////////////
+
+
+Question 1
+
+

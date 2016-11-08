@@ -15,7 +15,7 @@ import ca.polymtl.inf4410.tp1.shared.ServerInterface;
 
 public class Server implements ServerInterface {
 	
-	private double _badSever;
+	private double _badServer;
 	private int _serverCapacity;
 	private int _port;
 
@@ -32,7 +32,7 @@ public class Server implements ServerInterface {
 			//read server config file
 			List<String> lines = Files.readAllLines(Paths.get("serverConfig.xqt"));
 
-			_badSever = Double.parseDouble(lines.get(0));
+			_badServer = Double.parseDouble(lines.get(0));
 			_serverCapacity = Integer.parseInt(lines.get(1));
 			_port = Integer.parseInt(lines.get(2));
 			
@@ -90,7 +90,10 @@ public class Server implements ServerInterface {
 	public int execute(ArrayList<Pair<String, Integer>> listOps) throws RemoteException {
 		//verify if available
 		if(acceptTask(listOps.size())){
-			int result = 0;
+			if(Math.random() <= _badServer){
+				return (int) (Math.random() * 4000);
+			}
+			int result = 0;			
 			for(int i = 0; i<listOps.size(); ++i){
 				if(listOps.get(i).x.toLowerCase().equals("prime")){
 					result = (result + Operations.prime(listOps.get(i).y.intValue())) % 4000;
@@ -102,10 +105,8 @@ public class Server implements ServerInterface {
 					return -1;
 				}
 			}
-			System.out.println("ezmath");
 			return result; //random number, chosen by a fair dice roll
 		} else {
-			System.out.println("I ain't doin that shit");
 			return -1; //Operations refusées
 		}
 	}

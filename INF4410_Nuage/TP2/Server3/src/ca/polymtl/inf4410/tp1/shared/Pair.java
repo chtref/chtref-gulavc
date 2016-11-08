@@ -16,6 +16,10 @@ public class Pair<X, Y> implements Serializable{
 		this.y = y; 
 	} 
 	
+	public Pair() {
+		
+	}
+
 	public boolean equals(Pair<X, Y> p2){
 		return ((x.equals(p2.x)) && y.equals(p2.y));
 		

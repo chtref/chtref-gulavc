@@ -18,10 +18,10 @@ import java.util.concurrent.Future;
 
 import ca.polymtl.inf4410.tp1.shared.Pair;
 import ca.polymtl.inf4410.tp1.shared.ServerInterface;
+import ca.polymtl.inf4410.tp1.shared.Task;
 
 public class Client {
 	
-	private static String[] _serverList;
 	private static int[] _serverOccupancy;
 	private static int[] _serverLimit;
 	private static int[] _serverReputation;
@@ -78,6 +78,8 @@ public class Client {
 
 	private void run(String path) {
 		
+		long startTime = System.nanoTime();
+		
 		LinkedList<Pair<String,Integer>> uncompletedTasks = new LinkedList<Pair<String,Integer>>();
 		LinkedList<Pair<String, Integer>> sentTasks = new LinkedList<Pair<String,Integer>>();
 		//read calc file		
@@ -98,13 +100,91 @@ public class Client {
 		
 		
 		final ExecutorService service;
-        Future<Integer> threadTask;
+        ArrayList<Future<Task>> threadTaskList = new ArrayList<Future<Task>>();
+        ArrayList<Pair<Future<Task>,Future<Task>>> unsafeThreadList = new ArrayList<Pair<Future<Task>,Future<Task>>>();
 
         service = Executors.newFixedThreadPool(2 * distantServerStubs.length);        
         
 		
 		int global_answer = 0;
 		while(uncompletedTasks.size() > 0 || sentTasks.size() > 0){
+			
+			for(int i = 0; i <threadTaskList.size(); ++i){
+				if(threadTaskList.get(i).isDone()){
+					try{
+						final Task partial_answer;
+						partial_answer = threadTaskList.get(i).get();
+						threadTaskList.remove(i);
+						i--;
+						
+						if(partial_answer.answer == -1){
+							//server error
+							_serverLimit[partial_answer.server] -= 1;
+							for(Pair<String,Integer> p : partial_answer.task){
+								sentTasks.remove(p);							
+								uncompletedTasks.add(p);
+							}
+						} else {
+							//validate
+							_serverLimit[partial_answer.server] += 1;
+							global_answer = (global_answer + partial_answer.answer) % 4000;
+							for(Pair<String,Integer> p : partial_answer.task){
+								sentTasks.remove(p);
+							}
+						}
+					} catch(final InterruptedException ex) {
+						ex.printStackTrace();
+					} catch(final ExecutionException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+			
+			for(int i = 0; i <unsafeThreadList.size(); ++i){
+				if(unsafeThreadList.get(i).x.isDone() && unsafeThreadList.get(i).y.isDone()){
+					try{
+						final Task partial_answer;
+						final Task partial_answer2;
+						partial_answer = unsafeThreadList.get(i).x.get();
+						partial_answer2 = unsafeThreadList.get(i).y.get();
+						unsafeThreadList.remove(i);
+						i--;
+						
+						if(partial_answer.answer == -1 || partial_answer2.answer == -1){
+							//server error
+							_serverLimit[partial_answer.server] += Math.min(partial_answer.answer, 0);
+							_serverLimit[partial_answer2.server] += Math.min(partial_answer2.answer, 0);
+							for(Pair<String,Integer> p : partial_answer.task){
+								sentTasks.remove(p);							
+								uncompletedTasks.add(p);
+							}
+						} else {
+							//validate
+							_serverLimit[partial_answer.server] += 1;
+							_serverLimit[partial_answer2.server] += 1;
+							if(partial_answer.answer == partial_answer2.answer){
+								//good								
+								global_answer = (global_answer + partial_answer.answer) % 4000;
+								for(Pair<String,Integer> p : partial_answer.task){
+									sentTasks.remove(p);
+								}								
+							} else {
+								//bad
+								for(Pair<String,Integer> p : partial_answer.task){
+									sentTasks.remove(p);							
+									uncompletedTasks.add(p);
+								}
+							}
+							
+						}
+					} catch(final InterruptedException ex) {
+						ex.printStackTrace();
+					} catch(final ExecutionException ex) {
+						ex.printStackTrace();
+					}
+				}
+			}
+		
 			
 			if(uncompletedTasks.size() > 0){
 				//Choose available server
@@ -117,40 +197,31 @@ public class Client {
 					sentTasks.add(mate);
 				}
 				
-				//create thread for task
-				threadTask = service.submit(new CalcThread(task, distantServerStubs[server]));
-				try{
-					final int partial_answer;
-					partial_answer = threadTask.get();
-					
-					//System.out.println("JOHN FUCKING CENA");
-					
-					if(partial_answer == -1){
-						//server error
-						//_serverLimit[server] -= 1;
-						for(Pair<String,Integer> p : task){
-							uncompletedTasks.add(p);
-							sentTasks.remove(p);
-						}
-					} else {
-						//validate
-						//_serverLimit[server] += 1;
-						global_answer = (global_answer + partial_answer) % 4000;
-						for(Pair<String,Integer> p : task){
-							sentTasks.remove(p);
-						}
+				if(_unsafeMode){
+					int server2 = chooseServer();
+					while(server2 == server && distantServerStubs.length > 1){
+						server2 = chooseServer();
 					}
-				} catch(final InterruptedException ex) {
-					for(Pair<String,Integer> p : task){
-						uncompletedTasks.add(p);
-						sentTasks.remove(p);
-					}
-				} catch(final ExecutionException ex) {
-					ex.printStackTrace();
+					
+					Pair<Future<Task>,Future<Task>> pairOfTasks = new Pair<Future<Task>,Future<Task>>();
+					pairOfTasks.x = service.submit(new CalcThread(task, distantServerStubs[server], server));
+					pairOfTasks.y = service.submit(new CalcThread(task, distantServerStubs[server2], server));;
+					unsafeThreadList.add(pairOfTasks);
+					
+					
+					
+				} else {
+					//create thread for task
+					threadTaskList.add(service.submit(new CalcThread(task, distantServerStubs[server], server)));
 				}
+				
+				
+				
 			}
 		}
-		System.out.println(global_answer);
+		long endTime = System.nanoTime();
+		System.out.println("Time: " + (endTime - startTime));
+		System.out.println("Answer: " + global_answer);
 		service.shutdownNow();
 	}
 
@@ -178,28 +249,30 @@ public class Client {
 		return (int)(Math.random()*_serverOccupancy.length);
 	}
 	
-	private class CalcThread implements Callable<Integer> {
+	private class CalcThread implements Callable<Task> {
 		
-		private ArrayList<Pair<String, Integer>> _task;
+		public ArrayList<Pair<String, Integer>> _task;
 		private ServerInterface _server;
+		private int _serverID;
 		
-		public CalcThread(ArrayList<Pair<String, Integer>> task, ServerInterface server){
+		public CalcThread(ArrayList<Pair<String, Integer>> task, ServerInterface server, int serverID){
 			
 			_task = task;
 			_server = server;
+			_serverID = serverID;
 		}
 		
-		public Integer call() {
+		public Task call() {
 			int result = 0;
-			for(int i = 0; i < _task.size(); ++i){
-				try {
-					result += _server.execute(_task);
-				} catch (RemoteException e) {
-					e.printStackTrace();
-				}
+			
+			try {
+				result = _server.execute(_task);
+			} catch (RemoteException e) {
+				e.printStackTrace();
+				result = -1;
 			}
 			
-			return Integer.valueOf(result);
+			return new Task(result, _serverID, _task);
 		}
 	
 	} 
