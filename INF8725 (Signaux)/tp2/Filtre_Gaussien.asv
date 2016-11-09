@@ -1,6 +1,0 @@
-function [ img ] = Filtre_Gaussien( img_in, mask )
-%Filtre_Gaussien Filtre_Gaussien
-
-
-end
-
