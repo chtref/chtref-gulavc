@@ -1,0 +1,3 @@
+C:/TEMP/chtref-gulavc/INF4710_Multimedia/inf4710_a2016_tp3_cpp_v1.4/build/CMakeFiles/tp3.dir
+C:/TEMP/chtref-gulavc/INF4710_Multimedia/inf4710_a2016_tp3_cpp_v1.4/build/CMakeFiles/ALL_BUILD.dir
+C:/TEMP/chtref-gulavc/INF4710_Multimedia/inf4710_a2016_tp3_cpp_v1.4/build/CMakeFiles/ZERO_CHECK.dir
