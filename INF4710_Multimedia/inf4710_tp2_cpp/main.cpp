@@ -18,11 +18,7 @@
 #include "zigzag_inv.h"
 
 #define USE_SUBSAMPLING 1
-<<<<<<< HEAD
 #define USE_QUANT_QUALITY 100
-=======
-#define USE_QUANT_QUALITY 10
->>>>>>> 758d10e8379c469ece41d2bd48495cde0daace3a
 
 int main(int /*argc*/, char** /*argv*/) {
     try {
@@ -34,6 +30,7 @@ int main(int /*argc*/, char** /*argv*/) {
             {"data/logo.tif"},
             {"data/logo_noise.tif"},
             {"data/peppers.png"},
+			{"data/trump.png"}
         };
         for(const std::string& sTestImagePath : vsTestImagePaths) {
             const cv::Mat oInput = cv::imread(sTestImagePath);
