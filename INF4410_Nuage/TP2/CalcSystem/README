@@ -1,0 +1,13 @@
+Procédure afin d'exécuter les tests:
+
+1. Effectuer une copie du dossier pour chaque serveur de calcul désiré
+2. Modifier le fichier serverList.xqt pour lister les addresses ip et ports utilisés pour les serveurs
+3. Modifier le fichier serverConfig.xqt pour chaque serveur afin de déterminer ses paramètres. 
+	La 1ère ligne correspond à son facteur de malice (de 0.0 à 1.0)
+	La 2e ligne correspond à sa capacité
+	La 3e ligne correspond au port sur lequel le serveur comminique
+4. Lancer les différents serveurs à l'aide de la commande "./server"
+5. Lancer le répartiteur à l'aide de la commande "./client fileName"
+	fileName correspond à l'emplacement relatif du fichier contenant les operations à effectuer
+	Un deuxième paramètre est disponible "t" ou "true" afin d'activer le mode non-sécurisé.
+	Dans un tel cas, la commande pour lancer le répartiteur sera "./client fileName true"

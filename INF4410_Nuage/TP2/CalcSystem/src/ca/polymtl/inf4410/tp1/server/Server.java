@@ -90,25 +90,26 @@ public class Server implements ServerInterface {
 	public int execute(ArrayList<Pair<String, Integer>> listOps) throws RemoteException {
 		//verify if available
 		if(acceptTask(listOps.size())){
+			// On applique le taux de refus
 			if(Math.random() <= _badServer){
 				return (int) (Math.random() * 4000);
 			}
 			int result = 0;			
 			for(int i = 0; i<listOps.size(); ++i){
 				if(listOps.get(i).x.toLowerCase().equals("prime")){
+					// On calcule le prime
 					result = (result + Operations.prime(listOps.get(i).y.intValue())) % 4000;
 				} else if (listOps.get(i).x.toLowerCase().equals("pell")){
+					// On calcule le pell
 					result = (result + Operations.pell(listOps.get(i).y.intValue())) % 4000;
 				} else {
-					//panic
 					System.out.println("Unsupported operation in task. Aborting.");
 					return -1;
 				}
 			}
-			return result; //random number, chosen by a fair dice roll
+			return result;
 		} else {
-			return -1; //Operations refusées
+			return -1;
 		}
 	}
-	
 }
