@@ -26,10 +26,7 @@ title('Exercice 1.3: image déconvoluée avec K=0')
 % bruit.
 
 % Exercice 1.4
-
-% TODO: K représente le ratio du bruit et du signal (NSR) donc K ~= 0.001
-
-meilleur_k = 0.001;
+meilleur_k = 0.001 / sqrt(var(im2double(img_ford(:))));
 
 % Exercice 1.5
 img_ok = deconvwnr(img_ford, juste_h, meilleur_k);
@@ -40,7 +37,23 @@ title('Exercice 1.3: image déconvoluée avec le meilleur K')
 
 %%
 % Exercice 2
-
 %%
 
 % Exercice 2.1
+
+img_stairs = imread('escaliers.jpg');
+
+figure(4)
+imshow(img_stairs)
+title('Exercice 2.1: image originale')
+
+% Exercice 2.2
+
+th = 128;
+gauss = fspecial('gaussian');
+img_f = Filtre_Canny(img_stairs,gauss,th);
+
+
+figure(5)
+imshow(img_f,[])
+title('do we panic?')

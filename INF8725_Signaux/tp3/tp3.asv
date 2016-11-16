@@ -21,14 +21,34 @@ figure(2)
 imshow(img_panic)
 title('Exercice 1.3: image déconvoluée avec K=0')
 
-% TODO: Comment
+% L'image est complètement ruinée à cause du bruit. Il est extremement
+% difficile de trouver des morceaux de l'image originale dans ce mer de
+% bruit.
 
 % Exercice 1.4
-
-% K représente le ratio du bruit et du signal (NSR) donc K ~= 0.001
+meilleur_k = 0.001 / sqrt(var(im2double(img_ford(:))));
 
 % Exercice 1.5
-img_ok = deconvwnr(img_ford,juste_h,0.0011);
+img_ok = deconvwnr(img_ford, juste_h, meilleur_k);
 figure(3)
 imshow(img_ok)
-title('Exercice 1.3: image déconvoluée avec K=0.001')
+title('Exercice 1.3: image déconvoluée avec le meilleur K')
+
+
+%%
+% Exercice 2
+%%
+
+% Exercice 2.1
+
+img_stairs = imread('escaliers.jpg');
+
+figure(4)
+imshow(img_stairs)
+title('Exercice 2.1: image originale')
+
+% Exercice 2.2
+
+th = 0;
+
+img_f = Filtre_Canny(img_stairs,gauss,th);
