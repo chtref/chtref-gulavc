@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\TEMP\chtref-gulavc\INF4710_Multimedia\1687959_1688951_TP3\src\convo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TEMP\chtref-gulavc\INF4710_Multimedia\1687959_1688951_TP3\src\histo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TEMP\chtref-gulavc\INF4710_Multimedia\1687959_1688951_TP3\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\TEMP\chtref-gulavc\INF4710_Multimedia\1687959_1688951_TP3\include\utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\TEMP\chtref-gulavc\INF4710_Multimedia\1687959_1688951_TP3\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{A0C9CCFF-4A0E-3E73-8467-D80762F927E9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{5C230CE1-295D-3E6C-80F3-8C3BF71B1F88}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
