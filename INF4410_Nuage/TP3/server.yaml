@@ -12,17 +12,19 @@ parameters:
   key_name:
     type: string
     description: Name of an existing key pair to use for the server
+    default: chrels_cle4
     constraints:
       - custom_constraint: nova.keypair
   flavor:
     type: string
     description: Flavor for the server to be created
-    default: m1.small
+    default: INF4410-mini
     constraints:
       - custom_constraint: nova.flavor
   image:
     type: string
     description: Image ID or image name to use for the server
+    default: INF4410-Ubuntu-trusty-mini
     constraints:
       - custom_constraint: glance.image
   admin_pass:
@@ -43,12 +45,18 @@ parameters:
     constraints:
       - range: { min: 40000, max: 60000 }
         description: Port number must be between 40000 and 60000
-        
+  my_network : 
+    type: string
+    description: Reseau a utiliser
+    default: reseau-pour-tous
+    
 resources:
   server:
     type: OS::Nova::Server
     properties:
       image: { get_param: image }
+      networks:
+        - network: { get_param: my_network }
       flavor: { get_param: flavor }
       admin_pass: { get_param: admin_pass }
       user_data_format: RAW
@@ -56,6 +64,8 @@ resources:
         str_replace:
           template: |
             #!/bin/bash
+            wget "https://raw.githubusercontent.com/houssemmh/INF4410-TP3/master/server.py"
+            python server.py 
             echo db_port
           params:
             db_port: { get_param: db_port }
@@ -64,3 +74,4 @@ outputs:
   server_networks:
     description: The networks of the deployed server
     value: { get_attr: [server, networks] }
+
