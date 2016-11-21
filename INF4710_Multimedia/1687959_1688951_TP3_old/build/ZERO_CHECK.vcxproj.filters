@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\TEMP\chtref-gulavc\INF4710_Multimedia\1687959_1688951_TP3\build\CMakeFiles\ff239e84a941f1c7d8be862c13a2e690\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{87BB1C8A-1242-35FA-9700-2B31AC7C3C3B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -48,15 +48,12 @@ cv::Mat edgeMap(cv::Mat gradmap, float th) {
 	std::vector<cv::Mat> channels(3);
 	cv::split(gradmap, channels);
 
-	cv::Mat oResult(gradmap.size(), CV_32F);
+	cv::Mat oResult(channels[0].size(), CV_32F);
 
-	for (int i = 0; i < gradmap.rows; ++i) {
-		for (int j = 0; j < gradmap.cols; ++j) {
+	for (int i = 0; i < channels[0].rows; ++i) {
+		for (int j = 0; j < channels[0].cols; ++j) {
 			bool keep = false;
 			for (int k = 0; k < gradmap.channels() && !keep; ++k) {
-
-				if(channels[k].at<float>(i, j) != 0)
-					//std::cout << channels[k].at<float>(i, j) << " lol" << std::endl;
 
 				if (channels[k].at<float>(i, j) >= th) {
 					keep = true;
@@ -101,7 +98,6 @@ int main(int /*argc*/, char** /*argv*/) {
 			cv::Mat oImg;
 			oCap >> oImg;
 			cv::imshow("oImg", oImg);
-			cv::waitKey(1);
 			// ... @@@@ TODO
 
 			float frameDiff;
@@ -121,11 +117,11 @@ int main(int /*argc*/, char** /*argv*/) {
 			cv::Mat grad_y = tp3::convo(oImg, sob_y);
 
 			cv::Mat grad_mgt = magnitudeGradient(grad_x, grad_y);
-
 			cv::Mat edge_Map = edgeMap(grad_mgt, 80);
 
-			cv::imshow("TEst", edge_Map);
+			cv::imshow("edge_Map", edge_Map);
 
+			cv::waitKey(1);
 
 		}
 	}
