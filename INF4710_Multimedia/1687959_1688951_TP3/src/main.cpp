@@ -3,6 +3,11 @@
 
 #include "utils.hpp"
 
+#define EDGE_TH 80
+#define HISTOGRAM_DISTANCE 0.5
+#define EDGE_TRANSITION 0.5
+#define FADING_FRAMES_LIMIT 50
+
 float euclidianDistance(cv::Mat mat1, cv::Mat mat2) {
 	CV_Assert(mat1.size() == mat2.size());
 
@@ -60,7 +65,7 @@ cv::Mat edgeMap(cv::Mat gradmap, float th) {
 				}
 
 			}
-			float value = float(keep) * 255;
+			float value = float(keep);
 			oResult.at<float>(i, j) = value;
 		}
 	}
@@ -68,6 +73,23 @@ cv::Mat edgeMap(cv::Mat gradmap, float th) {
 	return oResult;
 
 }
+
+
+float calculate_p(cv::Mat dilated, cv::Mat edge) {
+
+	float numerator = 0.0;
+	float decimator = 0.0;
+
+	for (int i = 0; i < dilated.rows; ++i){
+		for (int j = 0; j < dilated.rows; ++j) {
+			numerator += dilated.at<float>(i, j) * edge.at<float>(i, j);
+			decimator += edge.at<float>(i, j);
+		}
+	}
+
+	return 1 - (numerator / decimator);
+}
+
 
 
 
@@ -79,7 +101,12 @@ int main(int /*argc*/, char** /*argv*/) {
 		cv::VideoCapture oCap("../data/TP3_video.avi");
 		CV_Assert(oCap.isOpened());
 
+		int recent_transition = 0;
+
 		std::vector<cv::Mat> histogramme;
+		std::vector<cv::Mat> edgemaps;
+		std::vector<cv::Mat> edgemaps_dilated;
+
 
 		cv::Mat_<float> sob_x(3, 3);
 		cv::Mat_<float> sob_y(3, 3);
@@ -100,26 +127,63 @@ int main(int /*argc*/, char** /*argv*/) {
 			cv::imshow("oImg", oImg);
 			// ... @@@@ TODO
 
+			if (recent_transition > 0)
+				recent_transition--;
+
 			float frameDiff;
 
 			histogramme.push_back(tp3::histo(oImg, 256));
-			if (i > 0) {
-				frameDiff = euclidianDistance(histogramme[i - 1], histogramme[i]);
-				//std::cout << frameDiff << std::endl;
-				if (frameDiff > 0.5) {
-					system("pause");
-				}
-			}
-
-			//for each frame, compare to the preceeding one'S histogram and conv.
-
+			
 			cv::Mat grad_x = tp3::convo(oImg, sob_x);
 			cv::Mat grad_y = tp3::convo(oImg, sob_y);
 
 			cv::Mat grad_mgt = magnitudeGradient(grad_x, grad_y);
-			cv::Mat edge_Map = edgeMap(grad_mgt, 80);
+			cv::Mat edge_Map = edgeMap(grad_mgt, EDGE_TH);
+			
+			edgemaps.push_back(edge_Map);
 
-			cv::imshow("edge_Map", edge_Map);
+			cv::Mat dil_edges;
+			cv::dilate(edge_Map, dil_edges, cv::Mat());
+			edgemaps_dilated.push_back(dil_edges);
+
+			std::vector<float> p_vect;
+
+			if (i > 0) {
+				//calculs
+				frameDiff = euclidianDistance(histogramme[i - 1], histogramme[i]);
+
+				float p_in = calculate_p(edgemaps_dilated[i - 1], edgemaps[i]);
+				float p_out = calculate_p(edgemaps_dilated[i], edgemaps[i - 1]);
+				float p = std::max(p_in, p_out);
+				p_vect.push_back(p);
+
+				
+
+				//detection transitions
+				if (i >= FADING_FRAMES_LIMIT) {
+					float p_avg = 0.0;
+					float p_avg_total = 0.0;
+					for (int f = 0; f < p_vect.size(); ++f){										
+						p_avg_total += p_vect[f];
+						if (f < FADING_FRAMES_LIMIT) {
+							p_avg += p_vect[i - f];
+						}
+					}
+					p_avg_total /= p_vect.size();
+					p_avg /= FADING_FRAMES_LIMIT;
+
+
+					if (p_avg > p_avg_total && recent_transition == 0) {
+						if (euclidianDistance(histogramme[i - FADING_FRAMES_LIMIT], histogramme[i]) > HISTOGRAM_DISTANCE) {
+							recent_transition = FADING_FRAMES_LIMIT * 2;
+							std::cout << "Transition detectee." << std::endl;
+							system("pause");
+						}
+					}
+				}
+			}
+			//for each frame, compare to the preceeding one'S histogram and conv.
+			
 
 			cv::waitKey(1);
 

@@ -31,9 +31,6 @@ cv::Mat tp3::convo(const cv::Mat& oImage, const cv::Mat_<float>& oKernel) {
 
 						if (!(i + m < 0 || i + m >= oImage.rows || j + n < 0 || j + n >= oImage.cols)) {
 
-
-							//cv::Vec3f channels = oImage.at<uchar>(i + m, j + n);
-
 							float temp1 = imageChannels[k].at<uchar>(i + m, j + n);
 							float temp2 = m + floor(oKernel.rows / 2.0);
 							float temp3 = n + floor(oKernel.cols / 2.0);
@@ -41,12 +38,11 @@ cv::Mat tp3::convo(const cv::Mat& oImage, const cv::Mat_<float>& oKernel) {
 
 							float temp5 = temp1 * temp4;
 							result += temp5;
-							//result += channels[k]*oKernel.at<float>(m + floor(oKernel.rows / 2.0), n + floor(oKernel.cols / 2.0));
 						}
 					}
 				}
 				resultChannels[k].at<float>(i, j) = result;
-				
+
 
 			}
 		}
