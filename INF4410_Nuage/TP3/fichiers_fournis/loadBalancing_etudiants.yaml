@@ -16,26 +16,54 @@ parameters:
   subnet_id:
     type: string
     description: Sous-reseau dans lequel le load balancer sera situe
-    default: #A completer
-
+    default: ec180045-1869-4e2a-b7a2-4c2731ed37a9
+  
+  network:
+    type: string
+    description: Network use by the server
+    default: reseau-pour-tous
+    
 resources:
   web_nodes:
       type: OS::Heat::ResourceGroup
       properties:
-      #A completer
+        count: 2
+        resource_def:
+          type: OS::Nova::Server
+          properties:
+            image: { get_param: image }
+            flavor: { get_param: flavor }
+            networks:
+              - network: { get_param: network }
+            user_data: |
+              #!/bin/bash
+              wget https://raw.githubusercontent.com/houssemmh/INF4410-TP3/master/server.py
+              python server.py &
 
 
   pool:
       type: OS::Neutron::Pool
-      #A completer
+      properties:
+        protocol: HTTP
+        monitors: [{get_resource: monitor}]
+        subnet_id: {get_param: subnet_id}
+        lb_method: ROUND_ROBIN
+        vip:
+          protocol_port: 8000
 
   lbalancer:
       type: OS::Neutron::LoadBalancer
-      #A completer
+      properties:
+        protocol_port: 8000
+        pool_id: {get_resource: pool}
 
   monitor:
       type: OS::Neutron::HealthMonitor
       properties:
+        type: TCP
+        delay: 10
+        max_retries: 1
+        timeout: 5
 
 
 outputs:
