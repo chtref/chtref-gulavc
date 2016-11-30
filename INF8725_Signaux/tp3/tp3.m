@@ -196,8 +196,8 @@ img_r_ = img_r .* img_edges_flou;
 img_g_ = img_g .* img_edges_flou;
 img_b_ = img_b .* img_edges_flou;
 
-img_finale_einstein = cat(3, img_r_, img_g_, img_b_);
+img_finale_einstein = uint8(cat(3, img_r_, img_g_, img_b_));
 
 figure(14)
-imshow(img_finale_einstein)
+imshow(img_finale_einstein(:,:,:), [0 255]);
 title('Exercice 4.6: Image finale')
