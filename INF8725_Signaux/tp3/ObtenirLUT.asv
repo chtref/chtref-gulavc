@@ -1,0 +1,10 @@
+function [ lookup_tbl ] = ObtenirLUT( nb_segs )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+
+delta = 255 / nb_segs;
+
+grad_angle_cat = zeros(size(grad_angle,1),size(grad_angle,2),2);
+
+end
+

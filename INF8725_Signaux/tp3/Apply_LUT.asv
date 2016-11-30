@@ -1,0 +1,8 @@
+function [ out_value ] = Apply_LUT( in_value, lookup_tbl )
+%APPLY_LUT Summary of this function goes here
+%   Detailed explanation goes here
+
+for x = 1:size(lookup_tbl)
+
+end
+

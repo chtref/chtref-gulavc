@@ -1,0 +1,15 @@
+function [ output_args ] = Segmenter_Couleur( img, lut_r, lut_g, lut_b )
+%SEGMENTER_COULEUR Segmenter_Couleur
+%   Exercice 3.3
+
+for i = 1:size(img,1)
+    for j = 1:size(img,2)
+        
+        img(i,j,1) = Apply_Lut(
+        
+    end
+end
+
+
+end
+

@@ -49,11 +49,155 @@ title('Exercice 2.1: image originale')
 
 % Exercice 2.2
 
-th = 128;
+th = 71;
 gauss = fspecial('gaussian');
 img_f = Filtre_Canny(img_stairs,gauss,th);
 
 
 figure(5)
 imshow(img_f,[])
-title('do we panic?')
+title('Exercice 2.2: image après Canny')
+
+% Exercice 2.3 - 2.4
+
+img_stairs_true = im2bw(imread('escaliers_TrueSeg.jpg'), 0.5);
+[performance, tauxFauxPositif, tauxFauxNegatifs] = Calculer_Precision(img_f, img_stairs_true);
+disp('Performance: ');
+disp(performance);
+disp('TPF: ');
+disp(tauxFauxPositif);
+disp('TFN: ');
+disp(tauxFauxNegatifs);
+
+%On remarque que la performance tourne autour de 26,77% dans le meilleur
+%des cas, soit un threshold avec une valeur de 71.
+
+%Si l'on augmente la valeur de ce threshold, on peut remarquer qu'il y aura 
+%moins de pixels blancs dans l'image, donc on peut s'attendre a un taux de faux positifs
+%moins élevé. Par contre, on peut remarquer aussi que puisque le nombre de
+%pixels blancs diminue, le nombre de pixels noirs augmentera: c'est
+%évident. Puisqu'il y aura plus de pixels noirs, on peut s'attendre à ce que le taux de faux négatifs diminue.
+
+%Si l'on diminue la valeur du threshold, on remarquera qu'il y aura plus de
+%pixels blancs sur l'image, donc on peut s'attendre à un taux de faux
+%positifs plus élevé. Par contre, on peut remarquer aussi que puisque le
+%nombre de pixels blancs augmente, le nombre de pixels noirs diminuera.
+%Puisqu'il y aura moins de pixels noirs, on peut s'attendre à ce que le
+%taux de faux négatifs augmente.
+
+% Exercice 2.5
+
+%%
+% Partie 2
+% Exercice 3
+%%
+% Exercice 3.1
+
+img_chat = imread('chateau.jpg');
+figure(6)
+imshow(img_chat,[]);
+title('Exercice 3.1: Image originale')
+
+% Exercice 3.4
+
+lut = ObtenirLUT(8);
+
+img_chat_seg = Segmenter_Couleur(img_chat, lut, lut, lut);
+
+figure(7)
+imshow(img_chat_seg,[0 255]);
+title('Exercice 3.4: Image segmentee')
+
+%Puisque notre image est divisée en 8 pour chaque composant, on peut
+%s'attendre à ce que l'espace occupé par l'image quantifiée soit 8 fois
+%plus petit.
+
+% Exercice 3.5
+
+lut_r = ObtenirLUT(2);
+lut_g = ObtenirLUT(2);
+lut_b = ObtenirLUT(2);
+
+img_chat_compare = Segmenter_Couleur(img_chat, lut_r, lut_g, lut_b);
+
+figure(8)
+imshow(img_chat_compare,[0 255]);
+title('Exercice 3.5: Image question 3.5')
+
+
+%%
+% Exercice 4
+%%
+
+% Exercice 4.1
+
+img_science = imread('Albert-Einstein.jpg');
+figure(9)
+imshow(img_science,[]);
+title('Exercice 4.1: Image originale (Albert)')
+
+% Exercice 4.2
+
+lut_r = ObtenirLUT(4);
+lut_g = ObtenirLUT(4);
+lut_b = ObtenirLUT(4);
+
+img_science_paint = Segmenter_Couleur(img_science, lut_r, lut_g, lut_b);
+
+figure(10)
+imshow(img_science_paint,[]);
+title('Exercice 4.2: Art of Einstein')
+
+% Exercice 4.3
+
+gauss = fspecial('gaussian',7,1);
+img_science_flou = uint8(convn(img_science_paint,gauss,'same'));
+
+figure(11)
+imshow(img_science_flou,[]);
+title('Exercice 4.3: Blurry Albert')
+
+% Exercice 4.4 
+
+red = img_science(:,:,1); % Red channel
+green = img_science(:,:,2); % Green channel
+blue = img_science(:,:,3); % Blue channel
+
+edges_r = Filtre_Canny(red,fspecial('gaussian'),230);
+edges_g = Filtre_Canny(green,fspecial('gaussian'),230);
+edges_b = Filtre_Canny(blue,fspecial('gaussian'),230);
+
+edges = (edges_r + edges_g + edges_b) ./ 3;
+edges = im2bw(edges,0.5);
+edges_inv = imcomplement(edges);
+
+figure(12)
+imshow(edges_inv,[])
+title('Exercice 4.4: Edges of science')
+
+% Exercice 4.5
+
+img_edges_flou = uint8(conv2(double(edges_inv),gauss,'same'));
+
+figure(13)
+imshow(img_edges_flou,[]);
+title('Exercice 4.5: Blurry Edges')
+
+
+% Exercice 4.6
+
+img_r = double(img_science_flou(:,:,1));
+img_g = double(img_science_flou(:,:,2));
+img_b = double(img_science_flou(:,:,3));
+
+img_edges_flou = double(img_edges_flou);
+
+img_r_ = img_r .* img_edges_flou;
+img_g_ = img_g .* img_edges_flou;
+img_b_ = img_b .* img_edges_flou;
+
+img_finale_einstein = cat(3, img_r_, img_g_, img_b_);
+
+figure(14)
+imshow(img_finale_einstein)
+title('Exercice 4.6: Image finale')
