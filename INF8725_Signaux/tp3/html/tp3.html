@@ -1,0 +1,720 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>tp3</title><meta name="generator" content="MATLAB 9.0"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2016-12-01"><meta name="DC.source" content="tp3.m"><style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
+
+html { min-height:100%; margin-bottom:1px; }
+html body { height:100%; margin:0px; font-family:Arial, Helvetica, sans-serif; font-size:10px; color:#000; line-height:140%; background:#fff none; overflow-y:scroll; }
+html body td { vertical-align:top; text-align:left; }
+
+h1 { padding:0px; margin:0px 0px 25px; font-family:Arial, Helvetica, sans-serif; font-size:1.5em; color:#d55000; line-height:100%; font-weight:normal; }
+h2 { padding:0px; margin:0px 0px 8px; font-family:Arial, Helvetica, sans-serif; font-size:1.2em; color:#000; font-weight:bold; line-height:140%; border-bottom:1px solid #d6d4d4; display:block; }
+h3 { padding:0px; margin:0px 0px 5px; font-family:Arial, Helvetica, sans-serif; font-size:1.1em; color:#000; font-weight:bold; line-height:140%; }
+
+a { color:#005fce; text-decoration:none; }
+a:hover { color:#005fce; text-decoration:underline; }
+a:visited { color:#004aa0; text-decoration:none; }
+
+p { padding:0px; margin:0px 0px 20px; }
+img { padding:0px; margin:0px 0px 20px; border:none; }
+p img, pre img, tt img, li img, h1 img, h2 img { margin-bottom:0px; } 
+
+ul { padding:0px; margin:0px 0px 20px 23px; list-style:square; }
+ul li { padding:0px; margin:0px 0px 7px 0px; }
+ul li ul { padding:5px 0px 0px; margin:0px 0px 7px 23px; }
+ul li ol li { list-style:decimal; }
+ol { padding:0px; margin:0px 0px 20px 0px; list-style:decimal; }
+ol li { padding:0px; margin:0px 0px 7px 23px; list-style-type:decimal; }
+ol li ol { padding:5px 0px 0px; margin:0px 0px 7px 0px; }
+ol li ol li { list-style-type:lower-alpha; }
+ol li ul { padding-top:7px; }
+ol li ul li { list-style:square; }
+
+.content { font-size:1.2em; line-height:140%; padding: 20px; }
+
+pre, code { font-size:12px; }
+tt { font-size: 1.2em; }
+pre { margin:0px 0px 20px; }
+pre.codeinput { padding:10px; border:1px solid #d3d3d3; background:#f7f7f7; }
+pre.codeoutput { padding:10px 11px; margin:0px 0px 20px; color:#4c4c4c; }
+pre.error { color:red; }
+
+@media print { pre.codeinput, pre.codeoutput { word-wrap:break-word; width:100%; } }
+
+span.keyword { color:#0000FF }
+span.comment { color:#228B22 }
+span.string { color:#A020F0 }
+span.untermstring { color:#B20000 }
+span.syscmd { color:#B28C00 }
+
+.footer { width:auto; padding:10px 0px; margin:25px 0px 0px; border-top:1px dotted #878787; font-size:0.8em; line-height:140%; font-style:italic; color:#878787; text-align:left; float:none; }
+.footer p { margin:0px; }
+.footer a { color:#878787; }
+.footer a:hover { color:#878787; text-decoration:underline; }
+.footer a:visited { color:#878787; }
+
+table th { padding:7px 5px; text-align:left; vertical-align:middle; border: 1px solid #d6d4d4; font-weight:bold; }
+table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px solid #d6d4d4; }
+
+
+
+
+
+  </style></head><body><div class="content"><pre class="codeinput"><span class="comment">% Exercice 1</span>
+</pre><pre class="codeinput"><span class="comment">% Exercice 1.1</span>
+
+img_ford = imread(<span class="string">'Formula_Ford.png'</span>);
+
+figure(1)
+imshow(img_ford)
+title(<span class="string">'Exercice 1.1: image originale'</span>)
+
+<span class="comment">% Exercice 1.2</span>
+
+angle = rad2deg(atan2(16,31));
+juste_h = fspecial(<span class="string">'motion'</span>, 30, angle);
+
+
+<span class="comment">% Exercice 1.3</span>
+img_panic = deconvwnr(img_ford,juste_h,0);
+figure(2)
+imshow(img_panic)
+title(<span class="string">'Exercice 1.3: image d&eacute;convolu&eacute;e avec K=0'</span>)
+
+<span class="comment">% L'image est compl&egrave;tement ruin&eacute;e &agrave; cause du bruit. Il est extremement</span>
+<span class="comment">% difficile de trouver des morceaux de l'image originale dans ce mer de</span>
+<span class="comment">% bruit.</span>
+
+<span class="comment">% Exercice 1.4</span>
+meilleur_k = 0.001 / sqrt(var(im2double(img_ford(:))));
+
+<span class="comment">% Exercice 1.5</span>
+img_ok = deconvwnr(img_ford, juste_h, meilleur_k);
+figure(3)
+imshow(img_ok)
+title(<span class="string">'Exercice 1.5: image d&eacute;convolu&eacute;e avec le meilleur K'</span>)
+</pre><img vspace="5" hspace="5" src="tp3_01.png" alt=""> <img vspace="5" hspace="5" src="tp3_02.png" alt=""> <img vspace="5" hspace="5" src="tp3_03.png" alt=""> <p>Exercice 2</p><pre class="codeinput"><span class="comment">% Exercice 2.1</span>
+
+img_stairs = imread(<span class="string">'escaliers.jpg'</span>);
+
+figure(4)
+imshow(img_stairs)
+title(<span class="string">'Exercice 2.1: image originale'</span>)
+
+<span class="comment">% Exercice 2.2</span>
+type <span class="string">Filtre_Canny.m</span>
+
+th = 71;
+gauss = fspecial(<span class="string">'gaussian'</span>);
+img_f = Filtre_Canny(img_stairs,gauss,th);
+
+
+figure(5)
+imshow(img_f,[])
+title(<span class="string">'Exercice 2.2: image apr&egrave;s Canny'</span>)
+
+<span class="comment">% Exercice 2.3</span>
+
+type <span class="string">Calculer_Precision.m</span>
+
+<span class="comment">% Exercice 2.4</span>
+
+img_stairs_true = im2bw(imread(<span class="string">'escaliers_TrueSeg.jpg'</span>), 0.5);
+[performance, tauxFauxPositif, tauxFauxNegatifs] = Calculer_Precision(img_f, img_stairs_true);
+disp(<span class="string">'Performance: '</span>);
+disp(performance);
+disp(<span class="string">'TPF: '</span>);
+disp(tauxFauxPositif);
+disp(<span class="string">'TFN: '</span>);
+disp(tauxFauxNegatifs);
+
+<span class="comment">%On remarque que la performance tourne autour de 26,77% dans le meilleur</span>
+<span class="comment">%des cas, soit un threshold avec une valeur de 71.</span>
+
+<span class="comment">%Si l'on augmente la valeur de ce threshold, on peut remarquer qu'il y aura</span>
+<span class="comment">%moins de pixels blancs dans l'image, donc on peut s'attendre a un taux de faux positifs</span>
+<span class="comment">%moins &eacute;lev&eacute;. Par contre, on peut remarquer aussi que puisque le nombre de</span>
+<span class="comment">%pixels blancs diminue, le nombre de pixels noirs augmentera: c'est</span>
+<span class="comment">%&eacute;vident. Puisqu'il y aura plus de pixels noirs, on peut s'attendre &agrave; ce que le taux de faux n&eacute;gatifs diminue.</span>
+
+<span class="comment">%Si l'on diminue la valeur du threshold, on remarquera qu'il y aura plus de</span>
+<span class="comment">%pixels blancs sur l'image, donc on peut s'attendre &agrave; un taux de faux</span>
+<span class="comment">%positifs plus &eacute;lev&eacute;. Par contre, on peut remarquer aussi que puisque le</span>
+<span class="comment">%nombre de pixels blancs augmente, le nombre de pixels noirs diminuera.</span>
+<span class="comment">%Puisqu'il y aura moins de pixels noirs, on peut s'attendre &agrave; ce que le</span>
+<span class="comment">%taux de faux n&eacute;gatifs augmente.</span>
+
+<span class="comment">% Exercice 2.5</span>
+
+<span class="comment">%canny edges = img_f</span>
+
+[H, theta, rho] = hough(img_f,<span class="string">'Theta'</span>,-1:0.1:1);
+peaks = houghpeaks(H, 100,<span class="string">'NHoodSize'</span>,[21 21],<span class="string">'threshold'</span>,1);
+lines = houghlines(img_f,theta,rho,peaks);
+
+figure(6)
+imshow(img_stairs)
+title(<span class="string">'Exercice 2.5: Image avec lignes verticales de Hough'</span>)
+hold <span class="string">on</span>
+max_len = 0;
+<span class="keyword">for</span> k = 1:length(lines)
+   xy = [lines(k).point1; lines(k).point2];
+   plot(xy(:,1),xy(:,2),<span class="string">'LineWidth'</span>,2,<span class="string">'Color'</span>,<span class="string">'green'</span>);
+
+   <span class="comment">% Plot beginnings and ends of lines</span>
+   plot(xy(1,1),xy(1,2),<span class="string">'x'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'Color'</span>,<span class="string">'yellow'</span>);
+   plot(xy(2,1),xy(2,2),<span class="string">'x'</span>,<span class="string">'LineWidth'</span>,2,<span class="string">'Color'</span>,<span class="string">'red'</span>);
+
+   <span class="comment">% Determine the endpoints of the longest line segment</span>
+   len = norm(lines(k).point1 - lines(k).point2);
+   <span class="keyword">if</span> ( len &gt; max_len)
+      max_len = len;
+      xy_long = xy;
+   <span class="keyword">end</span>
+<span class="keyword">end</span>
+<span class="comment">% highlight the longest line segment</span>
+plot(xy_long(:,1),xy_long(:,2),<span class="string">'LineWidth'</span>,2,<span class="string">'Color'</span>,<span class="string">'red'</span>);
+hold <span class="string">off</span>
+</pre><pre class="codeoutput">
+function [ imbin ] = Filtre_Canny( img, gauss, th )
+%Filtre_Canny Exercice 2.2
+
+tb = 0.4 * th; %Pourquoi? Parce que.
+
+img_gauss = imfilter(img,gauss);
+
+sobel_x = [-1, -2, -1;
+            0, 0, 0;
+            1, 2, 1];
+sobel_y = [-1, 0, 1;
+            -2, 0, 2;
+            -1, 0, 1];
+
+g_x = convn(img_gauss,sobel_x,'same');
+g_y = convn(img_gauss,sobel_y,'same');
+
+
+grad_module = sqrt(g_x.^2 + g_y.^2);
+grad_angle = rad2deg(atan2(g_y,g_x));
+
+grad_angle_cat = zeros(size(grad_angle,1),size(grad_angle,2),2);
+
+for i = 1:size(grad_angle,1)
+   for j = 1:size(grad_angle,2)
+       e = grad_angle(i,j);
+      if (e &gt; -22.5 &amp;&amp; e &lt;= 22.5) || (e &gt; 157.5 || e &lt;= -157.5)
+              grad_angle_cat(i,j,1) = 1;
+              grad_angle_cat(i,j,2) = 0;
+      elseif (e &gt; 22.5 &amp;&amp; e &lt;= 67.5) || (e &gt; -157.5 &amp;&amp; e &lt;= -112.5)
+              grad_angle_cat(i,j,1) = 1;
+              grad_angle_cat(i,j,2) = 1;
+      elseif (e &gt; 67.5 &amp;&amp; e &lt;= 112.5) || (e &gt; -112.5 &amp;&amp; e &lt;= -67.5)
+              grad_angle_cat(i,j,1) = 0;
+              grad_angle_cat(i,j,2) = 1;
+      elseif (e &gt; 112.5 &amp;&amp; e &lt;= 157.5) || (e &gt; -67.5 &amp;&amp; e &lt;= -22.5)
+              grad_angle_cat(i,j,1) = 1;
+              grad_angle_cat(i,j,2) = -1;
+      end       
+   end    
+end
+
+grad_module_padded = padarray(grad_module,[1 1]);
+grad_angle_cat = padarray(grad_angle_cat,[1 1]);
+
+for i = 2:size(grad_module,1)+1
+   for j = 2:size(grad_module,2)+1
+       
+       grad = grad_module_padded(i,j);
+       grad_plus1 = grad_module_padded(i + grad_angle_cat(i,j,1), j + grad_angle_cat(i,j,2));
+       grad_minus1 = grad_module_padded(i - grad_angle_cat(i,j,1), j - grad_angle_cat(i,j,2));
+       
+       if not(grad &gt;= grad_minus1 &amp;&amp; grad &gt;= grad_plus1)
+           grad_module_padded(i,j) = 0;
+       end
+
+   end
+end
+
+img_bin = zeros(size(grad_module_padded));
+for i = 2:size(grad_module,1)+1
+   for j = 2:size(grad_module,2)+1
+       if grad_module_padded(i,j) &gt;= th
+           img_bin(i,j) = 255;
+       else
+           img_bin(i,j) = 0;
+       end
+   end
+end
+
+
+imlf_finale = zeros(size(grad_module_padded));
+for i = 2:size(grad_module,1)+1
+   for j = 2:size(grad_module,2)+1
+       pixel_plus1 = img_bin(i + grad_angle_cat(i,j,1), j + grad_angle_cat(i,j,2));
+       pixel_minus1 = img_bin(i - grad_angle_cat(i,j,1), j - grad_angle_cat(i,j,2));
+       
+       if (pixel_plus1 &gt;= tb || pixel_minus1 &gt;= tb)
+           imlf_finale(i,j) = 255;
+       else
+           imlf_finale(i,j) = 0;
+       end
+       
+   end
+end
+
+imbin = img_bin(2:end-1,2:end-1);
+end
+
+
+function [ performance, tauxFauxPositif, tauxFauxNegatif ] = Calculer_Precision( imgSeg, imgRef )
+%CALCULER_PRECISION Calculer_Precision
+%   Calculer_Precision
+
+contourDetectes = sum(sum(imgSeg &gt; 0));
+contourReferences = sum(sum(imgRef &gt; 0));
+contourCorrects = sum(sum((imgSeg .* imgRef) &gt; 0));
+
+fauxPositifs = contourDetectes - contourCorrects;
+fauxNegatifs = contourReferences - contourCorrects;
+
+decimator = contourCorrects + fauxPositifs + fauxNegatifs;
+
+performance = contourCorrects / decimator;
+tauxFauxPositif = fauxPositifs / decimator;
+tauxFauxNegatif = fauxNegatifs / decimator;
+
+
+end
+
+Performance: 
+    0.2677
+
+TPF: 
+    0.4176
+
+TFN: 
+    0.3147
+
+</pre><img vspace="5" hspace="5" src="tp3_04.png" alt=""> <img vspace="5" hspace="5" src="tp3_05.png" alt=""> <img vspace="5" hspace="5" src="tp3_06.png" alt=""> <p>Partie 2 Exercice 3</p><p>Exercice 3.1</p><pre class="codeinput">img_chat = imread(<span class="string">'chateau.jpg'</span>);
+figure(7)
+imshow(img_chat,[]);
+title(<span class="string">'Exercice 3.1: Image originale'</span>)
+
+<span class="comment">% Exercice 3.2</span>
+
+type <span class="string">ObtenirLUT.m</span>
+
+<span class="comment">% Exercice 3.3</span>
+
+type <span class="string">Apply_LUT.m</span>
+type <span class="string">Segmenter_Couleur.m</span>
+
+<span class="comment">% Exercice 3.4</span>
+
+lut = ObtenirLUT(8);
+
+img_chat_seg = Segmenter_Couleur(img_chat, lut, lut, lut);
+
+figure(8)
+imshow(img_chat_seg,[0 255]);
+title(<span class="string">'Exercice 3.4: Image segmentee'</span>)
+
+<span class="comment">%Puisque notre image est divis&eacute;e en 8 pour chaque composant, on peut</span>
+<span class="comment">%s'attendre &agrave; ce que l'espace occup&eacute; par l'image quantifi&eacute;e soit 8 fois</span>
+<span class="comment">%plus petit.</span>
+
+<span class="comment">% Exercice 3.5</span>
+
+lut_r = ObtenirLUT(2);
+lut_g = ObtenirLUT(2);
+lut_b = ObtenirLUT(2);
+
+img_chat_compare = Segmenter_Couleur(img_chat, lut_r, lut_g, lut_b);
+
+figure(9)
+imshow(img_chat_compare,[0 255]);
+title(<span class="string">'Exercice 3.5: Image question 3.5'</span>)
+</pre><pre class="codeoutput">Warning: Image is too big to fit on screen; displaying at 67% 
+
+function [ lookup_tbl ] = ObtenirLUT( nb_segs )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+
+delta = 255 / nb_segs;
+
+lookup_tbl = zeros(nb_segs,2);
+
+for n = 1:nb_segs
+    lookup_tbl(n,1) = round(delta*n);
+    lookup_tbl(n,2) = round((round(delta*n) + round(delta*(n-1))) / 2);
+end
+
+end
+
+
+function [ out_value ] = Apply_LUT( in_value, lookup_tbl )
+%APPLY_LUT Summary of this function goes here
+%   Detailed explanation goes here
+
+x = 1;
+
+while lookup_tbl(x,1) &lt; in_value
+    x = x+1;
+end
+
+out_value = lookup_tbl(x,2);
+
+end
+
+
+function [ img_seg ] = Segmenter_Couleur( img, lut_r, lut_g, lut_b )
+%SEGMENTER_COULEUR Segmenter_Couleur
+%   Exercice 3.3
+
+img_seg = zeros(size(img,1),size(img,2));
+
+for i = 1:size(img,1)
+    for j = 1:size(img,2)
+        
+        img_seg(i,j,1) = Apply_LUT(img(i,j,1),lut_r);
+        img_seg(i,j,2) = Apply_LUT(img(i,j,2),lut_g);
+        img_seg(i,j,3) = Apply_LUT(img(i,j,3),lut_b);
+        
+    end
+end
+
+img_seg = uint8(img_seg);
+
+end
+
+Warning: Image is too big to fit on screen; displaying at 67% 
+Warning: Image is too big to fit on screen; displaying at 67% 
+</pre><img vspace="5" hspace="5" src="tp3_07.png" alt=""> <img vspace="5" hspace="5" src="tp3_08.png" alt=""> <img vspace="5" hspace="5" src="tp3_09.png" alt=""> <p>Exercice 4</p><pre class="codeinput"><span class="comment">% Exercice 4.1</span>
+
+img_science = imread(<span class="string">'Albert-Einstein.jpg'</span>);
+figure(10)
+imshow(img_science,[]);
+title(<span class="string">'Exercice 4.1: Image originale (Albert)'</span>)
+
+<span class="comment">% Exercice 4.2</span>
+
+lut_r = ObtenirLUT(4);
+lut_g = ObtenirLUT(4);
+lut_b = ObtenirLUT(4);
+
+img_science_paint = Segmenter_Couleur(img_science, lut_r, lut_g, lut_b);
+
+figure(11)
+imshow(img_science_paint,[]);
+title(<span class="string">'Exercice 4.2: Art of Einstein'</span>)
+
+<span class="comment">% Exercice 4.3</span>
+
+gauss = fspecial(<span class="string">'gaussian'</span>,7,1);
+img_science_flou = uint8(convn(img_science_paint,gauss,<span class="string">'same'</span>));
+
+figure(12)
+imshow(img_science_flou,[]);
+title(<span class="string">'Exercice 4.3: Blurry Albert'</span>)
+
+<span class="comment">% Exercice 4.4</span>
+
+red = img_science(:,:,1); <span class="comment">% Red channel</span>
+green = img_science(:,:,2); <span class="comment">% Green channel</span>
+blue = img_science(:,:,3); <span class="comment">% Blue channel</span>
+
+edges_r = Filtre_Canny(red,fspecial(<span class="string">'gaussian'</span>),230);
+edges_g = Filtre_Canny(green,fspecial(<span class="string">'gaussian'</span>),230);
+edges_b = Filtre_Canny(blue,fspecial(<span class="string">'gaussian'</span>),230);
+
+edges = (edges_r + edges_g + edges_b) ./ 3;
+edges = im2bw(edges,0.5);
+edges_inv = imcomplement(edges);
+
+figure(13)
+imshow(edges_inv,[])
+title(<span class="string">'Exercice 4.4: Edges of science'</span>)
+
+<span class="comment">% Exercice 4.5</span>
+
+img_edges_flou = uint8(conv2(double(edges_inv),gauss,<span class="string">'same'</span>));
+
+figure(14)
+imshow(img_edges_flou,[]);
+title(<span class="string">'Exercice 4.5: Blurry Edges'</span>)
+
+
+<span class="comment">% Exercice 4.6</span>
+
+img_r = double(img_science_flou(:,:,1));
+img_g = double(img_science_flou(:,:,2));
+img_b = double(img_science_flou(:,:,3));
+
+img_edges_flou = double(img_edges_flou);
+
+img_r_ = img_r .* img_edges_flou;
+img_g_ = img_g .* img_edges_flou;
+img_b_ = img_b .* img_edges_flou;
+
+img_finale_einstein = uint8(cat(3, img_r_, img_g_, img_b_));
+
+figure(15)
+imshow(img_finale_einstein(:,:,:), [0 255]);
+title(<span class="string">'Exercice 4.6: Image finale'</span>)
+</pre><img vspace="5" hspace="5" src="tp3_10.png" alt=""> <img vspace="5" hspace="5" src="tp3_11.png" alt=""> <img vspace="5" hspace="5" src="tp3_12.png" alt=""> <img vspace="5" hspace="5" src="tp3_13.png" alt=""> <img vspace="5" hspace="5" src="tp3_14.png" alt=""> <img vspace="5" hspace="5" src="tp3_15.png" alt=""> <p class="footer"><br><a href="http://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2016a</a><br></p></div><!--
+##### SOURCE BEGIN #####
+% Exercice 1
+%%
+
+% Exercice 1.1
+
+img_ford = imread('Formula_Ford.png');
+
+figure(1)
+imshow(img_ford)
+title('Exercice 1.1: image originale')
+
+% Exercice 1.2
+
+angle = rad2deg(atan2(16,31));
+juste_h = fspecial('motion', 30, angle);
+
+
+% Exercice 1.3
+img_panic = deconvwnr(img_ford,juste_h,0);
+figure(2)
+imshow(img_panic)
+title('Exercice 1.3: image déconvoluée avec K=0')
+
+% L'image est complètement ruinée à cause du bruit. Il est extremement
+% difficile de trouver des morceaux de l'image originale dans ce mer de
+% bruit.
+
+% Exercice 1.4
+meilleur_k = 0.001 / sqrt(var(im2double(img_ford(:))));
+
+% Exercice 1.5
+img_ok = deconvwnr(img_ford, juste_h, meilleur_k);
+figure(3)
+imshow(img_ok)
+title('Exercice 1.5: image déconvoluée avec le meilleur K')
+
+
+%%
+% Exercice 2
+%%
+
+% Exercice 2.1
+
+img_stairs = imread('escaliers.jpg');
+
+figure(4)
+imshow(img_stairs)
+title('Exercice 2.1: image originale')
+
+% Exercice 2.2
+type Filtre_Canny.m
+
+th = 71;
+gauss = fspecial('gaussian');
+img_f = Filtre_Canny(img_stairs,gauss,th);
+
+
+figure(5)
+imshow(img_f,[])
+title('Exercice 2.2: image après Canny')
+
+% Exercice 2.3 
+
+type Calculer_Precision.m
+
+% Exercice 2.4
+
+img_stairs_true = im2bw(imread('escaliers_TrueSeg.jpg'), 0.5);
+[performance, tauxFauxPositif, tauxFauxNegatifs] = Calculer_Precision(img_f, img_stairs_true);
+disp('Performance: ');
+disp(performance);
+disp('TPF: ');
+disp(tauxFauxPositif);
+disp('TFN: ');
+disp(tauxFauxNegatifs);
+
+%On remarque que la performance tourne autour de 26,77% dans le meilleur
+%des cas, soit un threshold avec une valeur de 71.
+
+%Si l'on augmente la valeur de ce threshold, on peut remarquer qu'il y aura 
+%moins de pixels blancs dans l'image, donc on peut s'attendre a un taux de faux positifs
+%moins élevé. Par contre, on peut remarquer aussi que puisque le nombre de
+%pixels blancs diminue, le nombre de pixels noirs augmentera: c'est
+%évident. Puisqu'il y aura plus de pixels noirs, on peut s'attendre à ce que le taux de faux négatifs diminue.
+
+%Si l'on diminue la valeur du threshold, on remarquera qu'il y aura plus de
+%pixels blancs sur l'image, donc on peut s'attendre à un taux de faux
+%positifs plus élevé. Par contre, on peut remarquer aussi que puisque le
+%nombre de pixels blancs augmente, le nombre de pixels noirs diminuera.
+%Puisqu'il y aura moins de pixels noirs, on peut s'attendre à ce que le
+%taux de faux négatifs augmente.
+
+% Exercice 2.5
+
+%canny edges = img_f
+
+[H, theta, rho] = hough(img_f,'Theta',-1:0.1:1);
+peaks = houghpeaks(H, 100,'NHoodSize',[21 21],'threshold',1);
+lines = houghlines(img_f,theta,rho,peaks);
+
+figure(6)
+imshow(img_stairs)
+title('Exercice 2.5: Image avec lignes verticales de Hough')
+hold on
+max_len = 0;
+for k = 1:length(lines)
+   xy = [lines(k).point1; lines(k).point2];
+   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+
+   % Plot beginnings and ends of lines
+   plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
+   plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
+
+   % Determine the endpoints of the longest line segment
+   len = norm(lines(k).point1 - lines(k).point2);
+   if ( len > max_len)
+      max_len = len;
+      xy_long = xy;
+   end
+end
+% highlight the longest line segment
+plot(xy_long(:,1),xy_long(:,2),'LineWidth',2,'Color','red');
+hold off
+
+%%
+% Partie 2
+% Exercice 3
+%%
+% Exercice 3.1
+
+img_chat = imread('chateau.jpg');
+figure(7)
+imshow(img_chat,[]);
+title('Exercice 3.1: Image originale')
+
+% Exercice 3.2
+
+type ObtenirLUT.m
+
+% Exercice 3.3
+
+type Apply_LUT.m
+type Segmenter_Couleur.m
+
+% Exercice 3.4
+
+lut = ObtenirLUT(8);
+
+img_chat_seg = Segmenter_Couleur(img_chat, lut, lut, lut);
+
+figure(8)
+imshow(img_chat_seg,[0 255]);
+title('Exercice 3.4: Image segmentee')
+
+%Puisque notre image est divisée en 8 pour chaque composant, on peut
+%s'attendre à ce que l'espace occupé par l'image quantifiée soit 8 fois
+%plus petit.
+
+% Exercice 3.5
+
+lut_r = ObtenirLUT(2);
+lut_g = ObtenirLUT(2);
+lut_b = ObtenirLUT(2);
+
+img_chat_compare = Segmenter_Couleur(img_chat, lut_r, lut_g, lut_b);
+
+figure(9)
+imshow(img_chat_compare,[0 255]);
+title('Exercice 3.5: Image question 3.5')
+
+
+%%
+% Exercice 4
+%%
+
+% Exercice 4.1
+
+img_science = imread('Albert-Einstein.jpg');
+figure(10)
+imshow(img_science,[]);
+title('Exercice 4.1: Image originale (Albert)')
+
+% Exercice 4.2
+
+lut_r = ObtenirLUT(4);
+lut_g = ObtenirLUT(4);
+lut_b = ObtenirLUT(4);
+
+img_science_paint = Segmenter_Couleur(img_science, lut_r, lut_g, lut_b);
+
+figure(11)
+imshow(img_science_paint,[]);
+title('Exercice 4.2: Art of Einstein')
+
+% Exercice 4.3
+
+gauss = fspecial('gaussian',7,1);
+img_science_flou = uint8(convn(img_science_paint,gauss,'same'));
+
+figure(12)
+imshow(img_science_flou,[]);
+title('Exercice 4.3: Blurry Albert')
+
+% Exercice 4.4 
+
+red = img_science(:,:,1); % Red channel
+green = img_science(:,:,2); % Green channel
+blue = img_science(:,:,3); % Blue channel
+
+edges_r = Filtre_Canny(red,fspecial('gaussian'),230);
+edges_g = Filtre_Canny(green,fspecial('gaussian'),230);
+edges_b = Filtre_Canny(blue,fspecial('gaussian'),230);
+
+edges = (edges_r + edges_g + edges_b) ./ 3;
+edges = im2bw(edges,0.5);
+edges_inv = imcomplement(edges);
+
+figure(13)
+imshow(edges_inv,[])
+title('Exercice 4.4: Edges of science')
+
+% Exercice 4.5
+
+img_edges_flou = uint8(conv2(double(edges_inv),gauss,'same'));
+
+figure(14)
+imshow(img_edges_flou,[]);
+title('Exercice 4.5: Blurry Edges')
+
+
+% Exercice 4.6
+
+img_r = double(img_science_flou(:,:,1));
+img_g = double(img_science_flou(:,:,2));
+img_b = double(img_science_flou(:,:,3));
+
+img_edges_flou = double(img_edges_flou);
+
+img_r_ = img_r .* img_edges_flou;
+img_g_ = img_g .* img_edges_flou;
+img_b_ = img_b .* img_edges_flou;
+
+img_finale_einstein = uint8(cat(3, img_r_, img_g_, img_b_));
+
+figure(15)
+imshow(img_finale_einstein(:,:,:), [0 255]);
+title('Exercice 4.6: Image finale')
+##### SOURCE END #####
+--></body></html>

@@ -32,7 +32,7 @@ meilleur_k = 0.001 / sqrt(var(im2double(img_ford(:))));
 img_ok = deconvwnr(img_ford, juste_h, meilleur_k);
 figure(3)
 imshow(img_ok)
-title('Exercice 1.3: image déconvoluée avec le meilleur K')
+title('Exercice 1.5: image déconvoluée avec le meilleur K')
 
 
 %%
@@ -48,6 +48,7 @@ imshow(img_stairs)
 title('Exercice 2.1: image originale')
 
 % Exercice 2.2
+type Filtre_Canny.m
 
 th = 71;
 gauss = fspecial('gaussian');
@@ -58,7 +59,11 @@ figure(5)
 imshow(img_f,[])
 title('Exercice 2.2: image après Canny')
 
-% Exercice 2.3 - 2.4
+% Exercice 2.3 
+
+type Calculer_Precision.m
+
+% Exercice 2.4
 
 img_stairs_true = im2bw(imread('escaliers_TrueSeg.jpg'), 0.5);
 [performance, tauxFauxPositif, tauxFauxNegatifs] = Calculer_Precision(img_f, img_stairs_true);
@@ -87,6 +92,36 @@ disp(tauxFauxNegatifs);
 
 % Exercice 2.5
 
+%canny edges = img_f
+
+[H, theta, rho] = hough(img_f,'Theta',-1:0.1:1);
+peaks = houghpeaks(H, 100,'NHoodSize',[21 21],'threshold',1);
+lines = houghlines(img_f,theta,rho,peaks);
+
+figure(6)
+imshow(img_stairs)
+title('Exercice 2.5: Image avec lignes verticales de Hough')
+hold on
+max_len = 0;
+for k = 1:length(lines)
+   xy = [lines(k).point1; lines(k).point2];
+   plot(xy(:,1),xy(:,2),'LineWidth',2,'Color','green');
+
+   % Plot beginnings and ends of lines
+   plot(xy(1,1),xy(1,2),'x','LineWidth',2,'Color','yellow');
+   plot(xy(2,1),xy(2,2),'x','LineWidth',2,'Color','red');
+
+   % Determine the endpoints of the longest line segment
+   len = norm(lines(k).point1 - lines(k).point2);
+   if ( len > max_len)
+      max_len = len;
+      xy_long = xy;
+   end
+end
+% highlight the longest line segment
+plot(xy_long(:,1),xy_long(:,2),'LineWidth',2,'Color','red');
+hold off
+
 %%
 % Partie 2
 % Exercice 3
@@ -94,9 +129,18 @@ disp(tauxFauxNegatifs);
 % Exercice 3.1
 
 img_chat = imread('chateau.jpg');
-figure(6)
+figure(7)
 imshow(img_chat,[]);
 title('Exercice 3.1: Image originale')
+
+% Exercice 3.2
+
+type ObtenirLUT.m
+
+% Exercice 3.3
+
+type Apply_LUT.m
+type Segmenter_Couleur.m
 
 % Exercice 3.4
 
@@ -104,7 +148,7 @@ lut = ObtenirLUT(8);
 
 img_chat_seg = Segmenter_Couleur(img_chat, lut, lut, lut);
 
-figure(7)
+figure(8)
 imshow(img_chat_seg,[0 255]);
 title('Exercice 3.4: Image segmentee')
 
@@ -120,7 +164,7 @@ lut_b = ObtenirLUT(2);
 
 img_chat_compare = Segmenter_Couleur(img_chat, lut_r, lut_g, lut_b);
 
-figure(8)
+figure(9)
 imshow(img_chat_compare,[0 255]);
 title('Exercice 3.5: Image question 3.5')
 
@@ -132,7 +176,7 @@ title('Exercice 3.5: Image question 3.5')
 % Exercice 4.1
 
 img_science = imread('Albert-Einstein.jpg');
-figure(9)
+figure(10)
 imshow(img_science,[]);
 title('Exercice 4.1: Image originale (Albert)')
 
@@ -144,7 +188,7 @@ lut_b = ObtenirLUT(4);
 
 img_science_paint = Segmenter_Couleur(img_science, lut_r, lut_g, lut_b);
 
-figure(10)
+figure(11)
 imshow(img_science_paint,[]);
 title('Exercice 4.2: Art of Einstein')
 
@@ -153,7 +197,7 @@ title('Exercice 4.2: Art of Einstein')
 gauss = fspecial('gaussian',7,1);
 img_science_flou = uint8(convn(img_science_paint,gauss,'same'));
 
-figure(11)
+figure(12)
 imshow(img_science_flou,[]);
 title('Exercice 4.3: Blurry Albert')
 
@@ -171,7 +215,7 @@ edges = (edges_r + edges_g + edges_b) ./ 3;
 edges = im2bw(edges,0.5);
 edges_inv = imcomplement(edges);
 
-figure(12)
+figure(13)
 imshow(edges_inv,[])
 title('Exercice 4.4: Edges of science')
 
@@ -179,7 +223,7 @@ title('Exercice 4.4: Edges of science')
 
 img_edges_flou = uint8(conv2(double(edges_inv),gauss,'same'));
 
-figure(13)
+figure(14)
 imshow(img_edges_flou,[]);
 title('Exercice 4.5: Blurry Edges')
 
@@ -198,6 +242,6 @@ img_b_ = img_b .* img_edges_flou;
 
 img_finale_einstein = uint8(cat(3, img_r_, img_g_, img_b_));
 
-figure(14)
+figure(15)
 imshow(img_finale_einstein(:,:,:), [0 255]);
 title('Exercice 4.6: Image finale')
